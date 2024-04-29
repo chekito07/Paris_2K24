@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block content %}
+
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Votre panier...</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Détail de votre panier...</p>
+                </div>
+            </div>
+        </header>
+
+
+         <div class="container">
+                <br>
+                {% if tickets %}
+                    <div>
+                        <a class="btn btn-secondary" href="{% url 'billet' %}">Aller à la Billetterie</a>
+                        <a class="btn btn-secondary" href="{% url 'users-info' %}">Valider le panier</a>
+                    </div>
+                    <br>
+                    {% for ticket in tickets %}
+
+                        <div class="card mb-3" >
+
+                             <div class="row g-0">
+                                 <div class="col-md-4">
+                                     <img src="{{ ticket.image.url }}" class="img-fluid rounded-start" alt="{{ ticket.name }}">
+                                 </div>
+                                 <div class="col-md-8">
+                                     <div class="card-body">
+                                         <h5 class="card-title">{{ ticket.name }}</h5>
+                                         <p class="card-text"><small class="text-muted">€ {{ ticket.price }}</small></p>
+                                         <p class="card-text">Nombre de place : {{ ticket.number_of_place }}</p>
+
+                                         {% for key, value in cart_items %}
+                                            {% for ky, val in value.items %}
+                                                {% if  key == ticket.id|slugify %}
+
+
+                                                    {% if ky == 'ticket_qty' %}
+                                                         <div class="col-md-1">
+                                                             Quantity:
+                                                             <select class="form-select" aria-label="Default select example" id="select{{ ticket.id }}">
+                                                                 <option selected>{{ val }}</option>
+                                                                 <option value="1">1</option>
+                                                                 <option value="2">2</option>
+                                                                 <option value="3">3</option>
+                                                             </select>
+                                                         </div>
+                                                    {% endif %}
+                                                    {% if ky == 'sport_choice' %}
+                                                         <div class="col-md-3">
+                                                             Sports:
+                                                             <select class="form-select" aria-label="Default select example" id="sports_choice">
+                                                                 <option selected>{{ val }}</option>
+                                                                 <option value="1">Basketball</option>
+                                                                 <option value="2">Biathlon</option>
+                                                                 <option value="3">Boxe</option>
+                                                                 <option value="4">Cyclisme</option>
+                                                                 <option value="1">Football</option>
+                                                                 <option value="2">Haltérophilie</option>
+                                                                 <option value="3">Judo</option>
+                                                                 <option value="4">Natation</option>
+                                                             </select>
+                                                         </div>
+                                                    {% endif %}
+                                                    <br>
+
+
+                                                {% endif %}
+                                            {% endfor %}
+                                         {% endfor %}
+
+                                         <br>
+
+
+                                         <button class="btn btn-secondary update-cart" type="button" data-index="{{ ticket.id }}">
+                                                    Changer la quantité et le sport
+                                         </button>
+                                         <button class="btn btn-danger delete-cart" type="button" data-index="{{ ticket.id }}">
+                                                    Supprimer ticket
+                                         </button>
+
+                                     </div>
+
+                                 </div>
+
+                             </div>
+                            <br>
+                        </div>
+
+
+
+
+                    {% endfor %}
+
+                    <h3>Total: {{ cart_total|floatformat:2 }}</h3>
+                    <a class="btn btn-secondary" href="{% url 'users-info' %}">Valider le panier</a>
+
+                {% else %}
+                    <h4>Votre panier est vide</h4>
+                {% endif %}
+
+
+        </div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<script>
+
+    //Mise à jour du ticket utilisateur
+    $(document).on('click', '.update-cart', function(e){
+        e.preventDefault();
+        let ticketId = $(this).data('index')
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'cart_update' %}",
+            data: {
+                ticket_id: $(this).data('index'),
+                ticket_qty: $('#select' + ticketId + ' option:selected').text(),
+                sport_choice: $('#sports_choice option:selected').text(),
+                action: 'post',
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(json){
+                console.log(json);
+                location.reload()
+
+            },
+            error: function(xhr, errmsg, err){
+            }
+
+        })
+    })
+</script>
+
+
+<script>
+    //Suppression du ticket utilisateur
+    $(document).on('click', '.delete-cart', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'cart_delete' %}",
+            data: {
+                ticket_id: $(this).data('index'),
+                action: 'post',
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(json){
+                console.log(json);
+                location.reload()
+
+            },
+            error: function(xhr, errmsg, err){
+            }
+
+        })
+    })
+</script>
+
+
+{% endblock %}

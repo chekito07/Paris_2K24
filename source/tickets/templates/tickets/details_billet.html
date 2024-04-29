@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Details du Ticket</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Votre Selection...</p>
+                </div>
+            </div>
+        </header>
+
+          <div class="container">
+            <br><br>
+
+                <div class="card mb-3" >
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img src="{{ details_billet.image.url }}" class="img-fluid rounded-start" alt="{{ details_billet.name }}">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ details_billet.name }}</h5>
+                        <p class="card-text">€ {{ details_billet.price|floatformat:2 }}</p>
+                        <p class="card-text">Nombre de place : {{ details_billet.number_of_place }}</p>
+
+                            <div class="col-md-3">
+                                Sports:
+                                <select class="form-select" aria-label="Default select example" id="sports_choice">
+                                    <option value="1">Athlétisme</option>
+                                    <option value="2">Aviron</option>
+                                    <option value="3">Basketball</option>
+                                    <option value="4">Cyclisme</option>
+                                    <option value="5">Football</option>
+                                    <option value="6">Haltérophilie</option>
+                                    <option value="7">Judo</option>
+                                    <option value="8">Natation</option>
+                                    </select>
+                            </div>
+
+                        <br>
+
+                            <div class="col-md-1">
+                                Quantité:
+                                <select class="form-select" aria-label="Default select example" id="ticket-qty">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    </select>
+                            </div>
+
+                        <br>
+
+                        <a class="btn btn-secondary" href="{% url 'billet' %}">Billetterie</a>
+                        <button class="btn btn-secondary" type="button" id="add-cart" value="{{ details_billet.id }}">
+                            Ajouter au Panier
+                        </button>
+                      </div>
+
+
+
+
+                    </div>
+
+                  </div>
+<br>
+                </div>
+
+
+          </div>
+<br><br><br><br><br><br><br><br>
+
+<script>
+
+    $(document).on('click', '#add-cart', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'cart_add' %}",
+            data: {
+                ticket_id: $('#add-cart').val(),
+                ticket_qty: $('#ticket-qty option:selected').text(),
+                sport_choice: $('#sports_choice option:selected').text(),
+                action: 'post',
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function(json){
+                //console.log(json)
+                document.getElementById('cart_qty').textContent = json.cart_qty
+                location.reload()
+
+            },
+            error: function(xhr, errmsg, err){
+            }
+
+        })
+    })
+
+
+</script>
+
+{% endblock %}

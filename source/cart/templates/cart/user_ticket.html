@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Vos tickets</h1>
+                    <p class="lead fw-normal text-white-50 mb-0"></p>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+                <br>
+                {% if ticket_solo %}
+                    {% for ticket in ticket_solo %}
+                        <div class="card mb-3" >
+                             <div class="row g-0">
+                                 <div class="col-md-4">
+                                     <img src="{{ img.image.url }}" class="img-fluid rounded-start" alt="">
+                                 </div>
+                                 <div class="col-md-8">
+                                     <div class="card-body">
+                                         <h5 class="card-title">Ticket jeux olympiques Paris 2024</h5>
+                                         <br>
+                                         <p class="card-text">Ticket valable pour 1 personne</p>
+                                         <p class="card-text">Utlisateur : {{ ticket.first_name }} {{ ticket.last_name|upper }}</p>
+                                         <p class="card-text">Sport: {{ ticket.sport_choice }}</p>
+                                         <p class="card-text">Date d'achat: {{ ticket.buying_date }}</p>
+                                     </div>
+                                     <div class="col-md-4">
+                                        <img src="{{ ticket.qr_code.url }}" width="100" height="100" alt="{{ ticket.id }}">
+                                     </div>
+                                 </div>
+                             </div>
+                            <br>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <br>
+                {% if ticket_duo %}
+                    {% for ticket in ticket_duo %}
+                        <div class="card mb-3" >
+                             <div class="row g-0">
+                                 <div class="col-md-4">
+                                     <img src="{{ img.image.url }}" class="img-fluid rounded-start" alt="">
+                                 </div>
+                                 <div class="col-md-8">
+                                     <div class="card-body">
+                                         <h5 class="card-title">Ticket jeux olympiques Paris 2024</h5>
+                                         <br>
+                                         <p class="card-text">Ticket valable pour 1 personne</p>
+                                         <p class="card-text">Utlisateur : {{ ticket.first_name }} {{ ticket.last_name|upper }}</p>
+                                         <p class="card-text">Sport: {{ ticket.sport_choice }}</p>
+                                         <p class="card-text">Date d'achat: {{ ticket.buying_date }}</p>
+                                     </div>
+                                     <div class="col-md-4">
+                                        <img src="{{ ticket.qr_code.url }}" width="100" height="100" alt="{{ ticket.id }}">
+                                     </div>
+                                 </div>
+                             </div>
+                            <br>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <br>
+                {% if ticket_famille %}
+                    {% for ticket in ticket_famille %}
+                        <div class="card mb-3" >
+                             <div class="row g-0">
+                                 <div class="col-md-4">
+                                     <img src="{{ img.image.url }}" class="img-fluid rounded-start" alt="">
+                                 </div>
+                                 <div class="col-md-8">
+                                     <div class="card-body">
+                                         <h5 class="card-title">Ticket jeux olympiques Paris 2024</h5>
+                                         <br>
+                                         <p class="card-text">Ticket valable pour 1 personne</p>
+                                         <p class="card-text">Utlisateur : {{ ticket.first_name }} {{ ticket.last_name|upper }}</p>
+                                         <p class="card-text">Sport: {{ ticket.sport_choice }}</p>
+                                         <p class="card-text">Date d'achat: {{ ticket.buying_date }}</p>
+                                     </div>
+                                     <div class="col-md-4">
+                                        <img src="{{ ticket.qr_code.url }}" width="100" height="100" alt="{{ ticket.id }}">
+                                     </div>
+                                 </div>
+
+                             </div>
+                            <br>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+        </div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}
