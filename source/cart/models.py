@@ -24,6 +24,7 @@ class Tickets(models.Model):
     class Meta:
         abstract = True
 
+
     def save(self, *args, **kwargs):
         user_id = ContentType.objects.get(app_label='authentication', model='user')
         user_id = user_id.get_object_for_this_type(id=self.user.id)

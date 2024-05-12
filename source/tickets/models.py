@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 
@@ -16,6 +17,10 @@ class OffresTickets(models.Model):
     number_of_place = models.IntegerField(choices=NumberOfPlace)
     image = models.ImageField(upload_to='offres_tickets')
 
+    class Meta:
+        verbose_name = 'OffresTickets'
+        verbose_name_plural = 'OffresTickets'
+
     def __str__(self):
         return self.name
 
@@ -23,3 +28,6 @@ class OffresTickets(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('details-billet', kwargs={'slug': self.slug})

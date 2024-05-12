@@ -79,5 +79,3 @@ class CreditCardHolderForm(forms.ModelForm):
         self.fields['card_validity'].widget.attrs['class'] = 'form-control'
         self.fields['card_validity'].widget.attrs['placeholder'] = 'Date expiration'
         self.fields['card_validity'].label = ''
-
-
