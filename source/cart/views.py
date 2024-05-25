@@ -13,8 +13,6 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 
 
-
-
 # Create your views here.
 def cart_summary(request):
     cart = Cart(request)

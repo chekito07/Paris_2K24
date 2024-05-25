@@ -15,7 +15,7 @@ class OffresTickets(models.Model):
     slug = models.SlugField(blank=True)
     price = models.DecimalField(default=0, decimal_places=3, max_digits=6)
     number_of_place = models.IntegerField(choices=NumberOfPlace)
-    image = models.ImageField(upload_to='offres_tickets')
+    image = models.ImageField(upload_to='offres_tickets', blank=True, null=True)
 
     class Meta:
         verbose_name = 'OffresTickets'
